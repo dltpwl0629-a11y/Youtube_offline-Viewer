@@ -32,7 +32,7 @@ class Downloader {
                 '--add-header', 'referer:https://www.youtube.com/'
             ];
             
-            const child = spawn(YT_DLP_PATH, args);
+            const child = spawn(YT_DLP_PATH, args, { shell: true });
             let stdoutChunks = [];
             let stderr = '';
 
@@ -88,7 +88,7 @@ class Downloader {
             ];
 
             return new Promise((resolve, reject) => {
-                const child = spawn(YT_DLP_PATH, args);
+                const child = spawn(YT_DLP_PATH, args, { shell: true });
 
                 child.stdout.on('data', (data) => {
                     const line = data.toString();
