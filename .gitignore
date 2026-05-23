@@ -1,0 +1,8 @@
+node_modules/
+data/videos/*
+data/thumbnails/*
+!data/thumbnails/.gitkeep
+data/library.json
+.DS_Store
+*.log
+nohup.out
