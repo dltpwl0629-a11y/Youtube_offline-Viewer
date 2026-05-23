@@ -74,12 +74,12 @@ class Downloader {
                 }
             }
 
-            // 최고 화질 우선 설정
+            // 폰 환경에서 가장 안정적인 H.264/MP4 고화질 설정
             const args = [
                 YTDLP_PATH,
                 url,
                 '-o', filePath,
-                '-f', 'bestvideo+bestaudio/best',
+                '-f', 'bestvideo[vcodec^=avc1][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4][height<=1080]',
                 '--no-check-certificates',
                 '--no-warnings',
                 '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
