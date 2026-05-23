@@ -74,15 +74,14 @@ class Downloader {
                 }
             }
 
-            // 고화질 (1080p 60fps MP4) 설정
+            // 고화질 단일 파일 MP4 설정 (병합 방지)
             const args = [
                 YTDLP_PATH,
                 url,
                 '-o', filePath,
-                '-f', 'bestvideo[height<=1080][fps>=60][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo[height<=1080][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[ext=mp4]/best',
+                '-f', 'best[ext=mp4]',
                 '--no-check-certificates',
-                '--ffmpeg-location', FFMPEG_PATH,
-                '--newline',
+                '--no-warnings',
                 '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 '--add-header', 'referer:https://www.youtube.com/'
             ];
