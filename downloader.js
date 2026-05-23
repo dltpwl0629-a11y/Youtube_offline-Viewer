@@ -37,22 +37,24 @@ class Downloader {
             ];
             
             const child = spawn(YT_DLP_PATH, args);
-            let stdout = '';
+            let stdoutChunks = [];
             let stderr = '';
 
-            child.stdout.on('data', (data) => stdout += data.toString());
+            child.stdout.on('data', (data) => stdoutChunks.push(data));
             child.stderr.on('data', (data) => stderr += data.toString());
 
             child.on('close', (code) => {
                 if (code === 0) {
                     try {
+                        const stdout = Buffer.concat(stdoutChunks).toString();
                         resolve(JSON.parse(stdout));
                     } catch (e) {
+                        console.error('[DOWNLOADER] JSON Parse Error:', e.message);
                         reject(new Error('Failed to parse video info'));
                     }
                 } else {
-                    console.error('[DOWNLOADER] Info fetch failed:', stderr);
-                    reject(new Error(`yt-dlp info fetch exited with code ${code}`));
+                    console.error('[DOWNLOADER] Info fetch failed (code ' + code + '):', stderr);
+                    reject(new Error(`yt-dlp info fetch failed: ${stderr}`));
                 }
             });
         });
