@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs-extra');
 const { spawn } = require('child_process');
 
-const YT_DLP_CMD = '/data/data/com.termux/files/usr/bin/yt-dlp';
+const PYTHON_PATH = '/data/data/com.termux/files/usr/bin/python3';
+const YTDLP_PATH = '/data/data/com.termux/files/usr/bin/yt-dlp';
 const FFMPEG_PATH = 'ffmpeg';
 
 class Downloader {
@@ -21,6 +22,7 @@ class Downloader {
         console.log(`[DOWNLOADER] Fetching info for: ${url}`);
         return new Promise((resolve, reject) => {
             const args = [
+                YTDLP_PATH,
                 url,
                 '--dump-single-json',
                 '--no-check-certificates',
@@ -29,7 +31,7 @@ class Downloader {
                 '--add-header', 'referer:https://www.youtube.com/'
             ];
             
-            const child = spawn(YT_DLP_CMD, args);
+            const child = spawn(PYTHON_PATH, args);
             let stdoutChunks = [];
             let stderr = '';
 
@@ -74,6 +76,7 @@ class Downloader {
 
             // 고화질 (1080p 60fps MP4) 설정
             const args = [
+                YTDLP_PATH,
                 url,
                 '-o', filePath,
                 '-f', 'bestvideo[height<=1080][fps>=60][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo[height<=1080][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[ext=mp4]/best',
@@ -85,8 +88,7 @@ class Downloader {
             ];
 
             return new Promise((resolve, reject) => {
-                const child = spawn(YT_DLP_CMD, args);
-                // ...
+                const child = spawn(PYTHON_PATH, args);
 
                 child.stdout.on('data', (data) => {
                     const line = data.toString();
