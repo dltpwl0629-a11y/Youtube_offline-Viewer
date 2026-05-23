@@ -3,11 +3,8 @@ const path = require('path');
 const fs = require('fs-extra');
 const { spawn } = require('child_process');
 
-// 시스템 환경에 따른 바이너리 경로 설정
-const YT_DLP_PATH = 'yt-dlp';
+const YT_DLP_CMD = 'python3';
 const FFMPEG_PATH = 'ffmpeg';
-
-const ytdlp = create(YT_DLP_PATH);
 
 class Downloader {
     constructor(baseDir) {
@@ -24,6 +21,7 @@ class Downloader {
         console.log(`[DOWNLOADER] Fetching info for: ${url}`);
         return new Promise((resolve, reject) => {
             const args = [
+                '-m', 'yt_dlp',
                 url,
                 '--dump-single-json',
                 '--no-check-certificates',
@@ -32,7 +30,7 @@ class Downloader {
                 '--add-header', 'referer:https://www.youtube.com/'
             ];
             
-            const child = spawn(YT_DLP_PATH, args, { shell: true });
+            const child = spawn(YT_DLP_CMD, args);
             let stdoutChunks = [];
             let stderr = '';
 
@@ -50,7 +48,7 @@ class Downloader {
                     }
                 } else {
                     console.error('[DOWNLOADER] Info fetch failed (code ' + code + '):', stderr);
-                    reject(new Error(`yt-dlp info fetch failed: ${stderr}`));
+                    reject(new Error(`yt-dlp info fetch failed`));
                 }
             });
         });
@@ -77,6 +75,7 @@ class Downloader {
 
             // 고화질 (1080p 60fps MP4) 설정
             const args = [
+                '-m', 'yt_dlp',
                 url,
                 '-o', filePath,
                 '-f', 'bestvideo[height<=1080][fps>=60][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo[height<=1080][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[ext=mp4]/best',
@@ -88,7 +87,7 @@ class Downloader {
             ];
 
             return new Promise((resolve, reject) => {
-                const child = spawn(YT_DLP_PATH, args, { shell: true });
+                const child = spawn(YT_DLP_CMD, args);
 
                 child.stdout.on('data', (data) => {
                     const line = data.toString();
