@@ -15,8 +15,9 @@
 
 ### 1. 필수 환경 및 소프트웨어 설치
 ```bash
+# 패키지 목록 업데이트 및 필수 도구(git, nodejs, ffmpeg, python) 설치
 pkg update && pkg upgrade -y
-pkg install -y nodejs ffmpeg python
+pkg install -y git nodejs ffmpeg python
 ```
 
 ### 2. 프로젝트 내려받기 및 의존성 설치
