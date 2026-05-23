@@ -9,11 +9,15 @@
 - **PWA 지원**: 모바일 기기에서 앱처럼 설치하여 사용할 수 있습니다.
 - **사용자 친화적 UI**: 다크 모드 기반의 깔끔한 인터페이스와 실시간 다운로드 진행 상태 확인이 가능합니다.
 
-## 설치 및 실행 방법
+## 설치 및 실행 방법 (Termux 환경)
 
-### 1. 필수 소프트웨어 설치
-- [Node.js](https://nodejs.org/) (버전 14 이상 권장)
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) 또는 관련 환경 (서버에서 영상 추출을 위해 필요)
+아래 명령어를 한 줄씩 또는 한꺼번에 복사하여 Termux에 붙여넣으세요.
+
+### 1. 필수 환경 및 소프트웨어 설치
+```bash
+pkg update && pkg upgrade -y
+pkg install -y nodejs ffmpeg python
+```
 
 ### 2. 프로젝트 내려받기 및 의존성 설치
 ```bash
