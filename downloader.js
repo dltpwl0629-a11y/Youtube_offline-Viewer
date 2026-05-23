@@ -74,12 +74,12 @@ class Downloader {
                 }
             }
 
-            // 고화질 단일 파일 MP4 설정 (병합 방지)
+            // 고화질 최우선 설정 (병합이 필요하면 yt-dlp가 자동으로 ffmpeg를 사용)
             const args = [
                 YTDLP_PATH,
                 url,
                 '-o', filePath,
-                '-f', 'best[ext=mp4]',
+                '-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
                 '--no-check-certificates',
                 '--no-warnings',
                 '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
