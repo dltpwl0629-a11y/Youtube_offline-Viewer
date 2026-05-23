@@ -4,12 +4,8 @@ const fs = require('fs-extra');
 const { spawn } = require('child_process');
 
 // 시스템 환경에 따른 바이너리 경로 설정
-const YT_DLP_PATH = process.platform === 'android' 
-    ? '/data/data/com.termux/files/usr/bin/yt-dlp' 
-    : 'yt-dlp';
-const FFMPEG_PATH = process.platform === 'android'
-    ? '/data/data/com.termux/files/usr/bin/ffmpeg'
-    : 'ffmpeg';
+const YT_DLP_PATH = 'yt-dlp';
+const FFMPEG_PATH = 'ffmpeg';
 
 const ytdlp = create(YT_DLP_PATH);
 
