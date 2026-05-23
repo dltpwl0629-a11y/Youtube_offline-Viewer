@@ -13,6 +13,9 @@ pkg update && pkg upgrade -y
 
 # 필요한 도구(git, nodejs, ffmpeg, python) 설치
 pkg install -y git nodejs ffmpeg python
+
+# 유튜브 다운로드 엔진 설치
+pip install yt-dlp
 ```
 
 ### 2. 프로젝트 내려받기 및 설정
