@@ -26,19 +26,36 @@ class Downloader {
 
     async getVideoInfo(url) {
         console.log(`[DOWNLOADER] Fetching info for: ${url}`);
-        try {
-            const info = await ytdlp(url, {
-                dumpSingleJson: true,
-                noCheckCertificates: true,
-                noWarnings: true,
-                jsRuntimes: 'node',
-                addHeader: ['referer:https://www.youtube.com/', 'user-agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'],
+        return new Promise((resolve, reject) => {
+            const args = [
+                url,
+                '--dump-single-json',
+                '--no-check-certificates',
+                '--no-warnings',
+                '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                '--add-header', 'referer:https://www.youtube.com/'
+            ];
+            
+            const child = spawn(YT_DLP_PATH, args);
+            let stdout = '';
+            let stderr = '';
+
+            child.stdout.on('data', (data) => stdout += data.toString());
+            child.stderr.on('data', (data) => stderr += data.toString());
+
+            child.on('close', (code) => {
+                if (code === 0) {
+                    try {
+                        resolve(JSON.parse(stdout));
+                    } catch (e) {
+                        reject(new Error('Failed to parse video info'));
+                    }
+                } else {
+                    console.error('[DOWNLOADER] Info fetch failed:', stderr);
+                    reject(new Error(`yt-dlp info fetch exited with code ${code}`));
+                }
             });
-            return info;
-        } catch (error) {
-            console.error('[DOWNLOADER] Error getting video info:', error.message);
-            throw error;
-        }
+        });
     }
 
     async downloadVideo(url, onProgress = () => {}) {
